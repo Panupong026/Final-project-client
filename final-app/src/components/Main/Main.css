@@ -1,0 +1,13 @@
+.d-flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  
+.card-container {
+      border: 1px solid black;
+      display: flex;
+      justify-content: center;
+      text-align: center;
+  }

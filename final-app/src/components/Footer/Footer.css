@@ -1,0 +1,28 @@
+.footer-navbar {
+    background-color: #333;
+}
+
+.footer-navbar {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 0;
+    width: 100%;
+  }
+
+.footer-item, .footer-text {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.footer-navbar .nav-link {
+    color: #fff;
+    margin-right: 15px;
+    font-size: 16px;
+    text-decoration: none;
+  }
+
+  .footer-navbar .nav-link:hover {
+    color: #ddd;
+  }
+  

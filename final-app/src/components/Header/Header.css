@@ -1,0 +1,18 @@
+.header-navbar {
+  background-color: #333;
+  padding: 15px 0;
+}
+.header-navbar .nav {
+  display: flex;
+  flex-direction: row;
+}
+.header-navbar .nav-link {
+  /* margin-left: 500px; */
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.header-navbar .nav-link:hover {
+  color: #ddd;
+}
