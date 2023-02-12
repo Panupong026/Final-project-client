@@ -1,53 +1,35 @@
-import React from "react";
-import { Card, Container } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Card, Container, ListGroup, ListGroupItem, Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import './Main.css'
 
-const Main = () => {
+const Main = (props) => {
+  const data = props.insurance;
+  // console.log(data);
+  const { insurance, selectedInsurance, setSelectedInsurance } = props;
+
+  const handleClick = (insurance) => {
+    setSelectedInsurance(insurance);
+  };
+
   return (
     <Container>
-      <h1 className="text-center mb-5">Choose your insurance</h1>
-      <div className="d-flex">
-        <Card className="card-container mb-5">
-          <Card.Body>
-            <Card.Title>TIP Premium Plus</Card.Title>
-            <Card.Text>
-              <p>Class: 1+</p>
-              <p>Starter price: xxxx</p>
-              <a href="/buy">Buy</a>
-            </Card.Text>
-          </Card.Body>
+      {data.map((insurance, index) => (
+        <Card key={index}>
+          <Card.Header className='item-title'>{insurance.name}</Card.Header>
+          <ListGroup className="list-group-flush">
+            <ListGroupItem>Class: {insurance.class}</ListGroupItem>
+            <ListGroupItem>Starter price: {insurance.price}</ListGroupItem>
+            <Nav.Link
+              as={Link}
+              to={"/product"}
+              onClick={() => handleClick(insurance)}
+            >
+              More detail
+            </Nav.Link>
+          </ListGroup>
         </Card>
-        <Card className="card-container mb-5">
-          <Card.Body>
-            <Card.Title>TIP Premium</Card.Title>
-            <Card.Text>
-              <p>Class: 1</p>
-              <p>Starter price: xxxx</p>
-              <a href="/buy">Buy</a>
-            </Card.Text>
-          </Card.Body>
-        </Card>
-        <Card className="card-container mb-5">
-          <Card.Body>
-            <Card.Title>TIP Up to mile</Card.Title>
-            <Card.Text>
-              <p>Class: 1</p>
-              <p>Starter price: xxxx</p>
-              <a href="/buy">Buy</a>
-            </Card.Text>
-          </Card.Body>
-        </Card>
-        <Card className="card-container mb-5">
-          <Card.Body>
-            <Card.Title>TIP Shock price</Card.Title>
-            <Card.Text>
-              <p>Class: 1</p>
-              <p>Starter price: xxxx</p>
-              <a href="/buy">Buy</a>
-            </Card.Text>
-          </Card.Body>
-        </Card>
-      </div>
+      ))}
     </Container>
   );
 };
