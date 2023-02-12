@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import Purchase from "../Purchase/Purchase";
-
+import { Form, Col, Button } from "react-bootstrap";
 
 const Forms = (props) => {
     console.log(props);
@@ -30,7 +29,7 @@ const Forms = (props) => {
             ...formData,
             [e.target.name]: e.target.value
         });
-    
+
         if (e.target.name === "start_cover_day") {
             let endCoverDay = new Date(e.target.value);
             endCoverDay.setFullYear(endCoverDay.getFullYear() + 1);
@@ -52,7 +51,7 @@ const Forms = (props) => {
                 alert("Error saving draft");
             });
     };
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         axios
@@ -68,126 +67,151 @@ const Forms = (props) => {
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <span>
-                    <h2>Customer Information</h2>
-                    <label htmlFor="customer_name_title">Customer Name Title:</label>
-                    <input
+            <Form onSubmit={handleSubmit}>
+                <h2>Information</h2>
+                <Form.Group>
+                    <Form.Label htmlFor="customer_name_title">Name Title:</Form.Label>
+                    <Form.Control
                         type="text"
                         name="customer_name_title"
                         value={formData.customer_name_title}
                         onChange={handleChange}
                     />
-                    <label htmlFor="customer_firstname">Customer First Name:</label>
-                    <input
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label htmlFor="customer_firstname">First Name:</Form.Label>
+                    <Form.Control
                         type="text"
                         name="customer_firstname"
                         value={formData.customer_firstname}
                         onChange={handleChange}
                     />
-                    <label htmlFor="customer_lastname">Customer Last Name:</label>
-                    <input
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label htmlFor="customer_lastname">Last Name:</Form.Label>
+                    <Form.Control
                         type="text"
                         name="customer_lastname"
                         value={formData.customer_lastname}
                         onChange={handleChange}
                     />
-                    <label htmlFor="customer_id_no">Customer ID Number:</label>
-                    <input
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label htmlFor="customer_id_no">ID Number:</Form.Label>
+                    <Form.Control
                         type="text"
                         name="customer_id_no"
                         value={formData.customer_id_no}
                         onChange={handleChange}
                     />
-                    <label htmlFor="customer_email">Customer email:</label>
-                    <input
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label htmlFor="customer_email">Email:</Form.Label>
+                    <Form.Control
                         type="text"
                         name="customer_email"
                         value={formData.customer_email}
                         onChange={handleChange}
                     />
-                    <label htmlFor="customer_birthday">Customer birthday:</label>
-                    <input
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label htmlFor="customer_birthday">Birthday:</Form.Label>
+                    <Form.Control
                         type="text"
                         name="customer_birthday"
                         value={formData.customer_birthday}
                         onChange={handleChange}
                     />
-                </span>
-                <span>
-                    <h2>Customer Adress</h2>
-                    <label htmlFor="customer_address_no">Customer Address Number:</label>
-                    <input
+                </Form.Group>
+
+                <h2>Address</h2>
+                <Form.Group>
+                    <Form.Label htmlFor="customer_address_no">Address Number:</Form.Label>
+                    <Form.Control
                         type="text"
                         name="customer_address_no"
                         value={formData.customer_address_no}
                         onChange={handleChange}
                     />
-                    <label htmlFor="customer_subdistrict">Customer Subdistrict:</label>
-                    <input
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label htmlFor="customer_subdistrict">Subdistrict:</Form.Label>
+                    <Form.Control
                         type="text"
                         name="customer_subdistrict"
                         value={formData.customer_subdistrict}
                         onChange={handleChange}
                     />
-                    <label htmlFor="customer_district">Customer district:</label>
-                    <input
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label htmlFor="customer_district">District:</Form.Label>
+                    <Form.Control
                         type="text"
                         name="customer_district"
                         value={formData.customer_district}
                         onChange={handleChange}
                     />
-                    <label htmlFor="customer_province">Customer province:</label>
-                    <input
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label htmlFor="customer_province">Province:</Form.Label>
+                    <Form.Control
                         type="text"
                         name="customer_province"
                         value={formData.customer_province}
                         onChange={handleChange}
                     />
-                </span>
-                <span>
-                    <h2>Insurance information</h2>
-                    <label htmlFor="start_cover_day">start_cover_day: </label>
-                    <input
+                </Form.Group>
+                <h2>Insurance information</h2>
+                <Form.Group>
+                    <Form.Label htmlFor="start_cover_day">start_cover_day: </Form.Label>
+                    <Form.Control
                         type="date"
                         name="start_cover_day"
                         value={formData.start_cover_day}
                         onChange={handleChange}
                     />
-                    <label htmlFor="end_cover_day">end_cover_day: </label>
-                    <input
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label htmlFor="end_cover_day">end_cover_day: </Form.Label>
+                    <Form.Control
                         type="date"
                         name="end_cover_day"
                         value={formData.end_cover_day}
                         onChange={handleChange}
                     />
-                    <label htmlFor="premium">premium: </label>
-                    <input
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label htmlFor="premium">premium: </Form.Label>
+                    <Form.Control
                         type="text"
                         name="premium"
                         value={formData.premium}
                         onChange={handleChange}
                     />
-                    <label htmlFor="beneficial_info">beneficial_info: </label>
-                    <input
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label htmlFor="beneficial_info">beneficial_info: </Form.Label>
+                    <Form.Control
                         type="text"
                         name="beneficial_info"
                         value={formData.beneficial_info}
                         onChange={handleChange}
                     />
-                    <label htmlFor="insurance_info">insurance_info: </label>
-                    <input
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label htmlFor="insurance_info">insurance_info: </Form.Label>
+                    <Form.Control
                         type="text"
                         name="insurance_info"
                         value={formData.insurance_info}
                         onChange={handleChange}
                     />
-                </span>
-                <button onClick={handleSaveDraft}>Save as Draft</button>
-                <button type="submit" href="/purchase">Submit</button>
-            </form>
+                </Form.Group>
+                <Button onClick={handleSaveDraft}>Save as Draft</Button>
+                <Button onClick={handleSubmit} type="submit" href="/purchase">Submit</Button>
+            </Form>
 
-        </div>
+        </div >
     )
 }
 

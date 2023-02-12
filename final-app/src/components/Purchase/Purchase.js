@@ -7,6 +7,7 @@ const Purchase = () => {
         <div>
             Please scan QR code<br/>
             <img src={qrcode} />
+            <a href="/">Back to main page</a>
         </div>
     )
 }
