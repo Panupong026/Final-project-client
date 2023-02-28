@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
-import { Form, FormControl, FormLabel, FormGroup, Button } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './Signup.css';
+import { useNavigate } from "react-router-dom";
 
-const Signup = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+const Signup = (props) => {
+
+    console.log(props);
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
+        password: "",
+        username: "",
         name_title: "",
         firstname: "",
         lastname: "",
         email: "",
         type: "",
         expire_date: "",
-        register_date: "",
         cert_no: "",
         address_no: "",
         sub_district: "",
@@ -20,6 +24,17 @@ const Signup = () => {
         province: "",
         telephone: "",
     });
+
+    useEffect(() => {
+        axios.get(`http://day4.test/api/tip/register/${props.selectedId}`)
+            .then(res => {
+                console.log(res.data.data)
+                setFormData(res.data.data)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }, [])
 
     const handleChange = (e) => {
         setFormData({
@@ -29,7 +44,7 @@ const Signup = () => {
     };
 
     const handleSaveDraft = () => {
-        axios.post("/api/draft", { ...formData, status: "draft" })
+        axios.put(`http://localhost:8080/agent/${props.selectedId}`, { ...formData })
             .then(res => {
                 console.log(res);
                 alert("Draft saved successfully");
@@ -42,11 +57,13 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(formData)
         axios
-            .post("", formData)
+            .post("http://localhost:8080/agent", formData)
             .then((response) => {
                 console.log(response.data);
                 alert("Form submitted successfully");
+                navigate("/login");
             })
             .catch((error) => {
                 console.error(error);
@@ -56,147 +73,207 @@ const Signup = () => {
 
     return (
         <div className="signup-page">
-            <Form onSubmit={handleSubmit}>
-                <h2>Account info</h2>
-                <FormGroup controlId="formUsername">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Enter username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)} required />
-                </FormGroup>
-                <FormGroup controlId="formPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password"
-                        value={password} onChange={(e) => setPassword(e.target.value)} required />
-                </FormGroup>
-                <h2>Personal info</h2>
-                <FormGroup>
-                    <FormControl as="select" name="name_title" value={formData.name_title} onChange={handleChange}>
+            <form onSubmit={handleSubmit}>
+                <h2 className="topic">Account info</h2>
+                <span className="set">
+                    <div className="col-3 input-effect">
+                        <input
+                            className="effect-21"
+                            type="text"
+                            placeholder="Enter username"
+                            name="username"
+                            onChange={handleChange}
+                        />
+                        <label>Username</label>
+                        <span className="focus-border">
+                            <i></i>
+                        </span>
+                    </div>
+                    <div className="col-3 input-effect">
+                        <input
+                            className="effect-21"
+                            type="text"
+                            placeholder="Enter password"
+                            name="password"
+                            onChange={handleChange}
+                        />
+                        <label>Password</label>
+                        <span className="focus-border">
+                            <i></i>
+                        </span>
+                    </div>
+                </span>
+
+                <h2 className="topic">Personal info</h2>
+                <span className="set">
+                    <select as="select" name="name_title" value={formData.name_title} onChange={handleChange}>
                         <option value="">Select Title</option>
                         <option value="Mr.">Mr.</option>
                         <option value="Ms.">Ms.</option>
                         <option value="Mrs.">Mrs.</option>
                         <option value="not specified">Not specified</option>
-                    </FormControl>
-                </FormGroup>
+                    </select>
+                    <div className="col-3 input-effect">
+                        <input
+                            className="effect-21"
+                            type="text"
+                            name="firstname"
+                            value={formData.firstname}
+                            placeholder="Enter firstname"
+                            onChange={handleChange}
+                        />
+                        <label>First Name</label>
+                        <span className="focus-border">
+                            <i></i>
+                        </span>
+                    </div>
+                    <div className="col-3 input-effect">
+                        <input
+                            className="effect-21"
+                            type="text"
+                            name="lastname"
+                            value={formData.lastname}
+                            placeholder="Enter lastname"
+                            onChange={handleChange}
+                        />
+                        <label>Last Name</label>
+                        <span className="focus-border">
+                            <i></i>
+                        </span>
+                    </div>
+                    <div className="col-3 input-effect">
+                        <input
+                            className="effect-21"
+                            type="text"
+                            value={formData.email}
+                            name="email"
+                            placeholder="Enter email"
+                            onChange={handleChange}
+                        />
+                        <label>Email</label>
+                        <span className="focus-border">
+                            <i></i>
+                        </span>
+                    </div>
+                    <div className="col-3 input-effect">
+                        <input
+                            className="effect-21"
+                            type="text"
+                            value={formData.telephone}
+                            name="telephone"
+                            placeholder="Enter phone number"
+                            onChange={handleChange}
+                        />
+                        <label>Telephone</label>
+                        <span className="focus-border">
+                            <i></i>
+                        </span>
+                    </div>
+                </span>
 
-                <FormGroup>
-                    <FormLabel>First Name:</FormLabel>
-                    <FormControl
-                        type="text"
-                        name="firstname"
-                        value={formData.firstname}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <FormLabel>Last Name:</FormLabel>
-                    <FormControl
-                        type="text"
-                        name="lastname"
-                        value={formData.lastname}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <FormLabel>Email:</FormLabel>
-                    <FormControl
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <FormLabel>Telephone:</FormLabel>
-                    <FormControl
-                        type="text"
-                        name="telephone"
-                        value={formData.telephone}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <h2>Certification info</h2>
-                <Form.Group controlId="formType">
-                    <Form.Label>Type:</Form.Label>
-                    <Form.Control as="select"
+                <h2 className="topic">Certification info</h2>
+                <span className="set">
+                    <select
+                        as="select"
                         name="type"
                         value={formData.type}
                         onChange={handleChange}>
+                        <option value="" disabled>Select Title</option>
                         <option value="agent">Agent</option>
                         <option value="middleman">Middleman</option>
-                    </Form.Control>
-                </Form.Group>
-                <FormGroup>
-                    <FormLabel>Certificate Number:</FormLabel>
-                    <FormControl
-                        type="text"
-                        name="cert_no"
-                        value={formData.cert_no}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <FormLabel>Register Date:</FormLabel>
-                    <FormControl
-                        type="date"
-                        name="register_date"
-                        value={formData.register_date}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <FormLabel>Expire Date:</FormLabel>
-                    <FormControl
-                        type="date"
-                        name="expire_date"
-                        value={formData.expire_date}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <h2>Address</h2>
-                <FormGroup>
-                    <FormLabel>Address Number:</FormLabel>
-                    <FormControl
-                        type="text"
-                        name="address_no"
-                        value={formData.address_no}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <FormLabel>Sub-District:</FormLabel>
-                    <FormControl
-                        type="text"
-                        name="sub_district"
-                        value={formData.sub_district}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <FormLabel>District:</FormLabel>
-                    <FormControl
-                        type="text"
-                        name="district"
-                        value={formData.district}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <FormLabel>Province:</FormLabel>
-                    <FormControl
-                        type="text"
-                        name="province"
-                        value={formData.province}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <button onClick={handleSaveDraft}>Save as Draft</button>
-                <button type="submit" href="/purchase">Submit</button>
-            </Form>
-        </div >
+                    </select>
+                    <div className="col-3 input-effect">
+                        <input
+                            className="effect-21"
+                            type="text"
+                            name="cert_no"
+                            value={formData.cert_no}
+                            placeholder="Enter cert nubmer"
+                            onChange={handleChange} />
+                        <label>Cert no.</label>
+
+                        <span className="focus-border">
+                            <i></i>
+                        </span>
+                    </div>
+
+                    <div className="col-3 input-effect">
+                        <input
+                            type="date"
+                            className="effect-21"
+                            name="expire_date"
+                            value={formData.expire_date}
+                            onChange={handleChange} />
+                        <label>Expire date.</label>
+                        <span className="focus-border">
+                            <i></i>
+                        </span>
+                    </div>
+                </span>
+
+                <h2 className="topic">Address</h2>
+                <span className="set">
+                    <div className="col-3 input-effect">
+                        <input
+                            className="effect-21"
+                            type="text"
+                            name="address_no"
+                            value={formData.address_no}
+                            placeholder="Enter address number"
+                            onChange={handleChange}
+                        />
+                        <label>Address Number</label>
+                        <span className="focus-border">
+                            <i></i>
+                        </span>
+                    </div>
+                    <div className="col-3 input-effect">
+                        <input
+                            className="effect-21"
+                            type="text"
+                            value={formData.sub_district}
+                            name="sub_district"
+                            placeholder="Enter sub district"
+                            onChange={handleChange}
+                        />
+                        <label>Sub-District</label>
+                        <span className="focus-border">
+                            <i></i>
+                        </span>
+                    </div>
+                    <div className="col-3 input-effect">
+                        <input
+                            className="effect-21"
+                            type="text"
+                            value={formData.district}
+                            name="district"
+                            placeholder="Enter district"
+                            onChange={handleChange}
+                        />
+                        <label>District</label>
+                        <span className="focus-border">
+                            <i></i>
+                        </span>
+                    </div>
+                    <div className="col-3 input-effect">
+                        <input
+                            className="effect-21"
+                            type="text"
+                            name="province"
+                            value={formData.province}
+                            placeholder="Enter province"
+                            onChange={handleChange}
+                        />
+                        <label>Province</label>
+                        <span className="focus-border">
+                            <i></i>
+                        </span>
+                    </div>
+                </span>
+                <button className='btn-item' type="submit" href="/purchase">Submit</button>
+            </form>
+                <button className='btn-item' onClick={handleSaveDraft}>Save as Draft</button>
+        </div>
     );
 };
 

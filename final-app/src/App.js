@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from './components/Header/Header'
 import Footer from "./components/Footer/Footer";
@@ -8,83 +9,156 @@ import Signup from "./components/Signup/Signup";
 import Product from "./components/Product/Product";
 import Forms from "./components/Forms/Forms";
 import Purchase from "./components/Purchase/Purchase";
-
-const insurance = [
-  { name: "TIP Premium plus", class: "1+", price: 16900 },
-  { name: "TIP Up to mile", class: "1", price: 5000 },
-  { name: "TIP Premium", class: "1", price: 14900 },
-  { name: "TIP Shock Price", class: "1", price: 9000 },
-  { name: "TIP 2+", class: "2", price: 7799 },
-  { name: "TIP 3+", class: "3+", price: 6799 },
-  { name: "TIP 3", class: "3", price: 1899 }
-]
-
+import Report from "./components/Report/Report";
+import PrintableReport from "./components/PrintableReport/PrintableReport";
+import Table from "./components/Table/Table";
 
 const App = () => {
 
+  const [data, setData] = useState([]);
   const [selectedInsurance, setSelectedInsurance] = useState({});
+  const [selectedId, setSelectedId] = useState();
+  const [loggedIn, SetLoggedIn] = useState(false);
+  const [formData, setFormData] = useState({
+    customer_name_title: "",
+    customer_firstname: "",
+    customer_lastname: "",
+    customer_id_no: "",
+    customer_email: "",
+    customer_birthday: "",
+    customer_address_no: "",
+    customer_subdistrict: "",
+    customer_district: "",
+    customer_province: "",
+    start_cover_day: "",
+    end_cover_day: "",
+    premium: "",
+    beneficial_info: "",
+    insurance_info: "",
+    insurance_id: "",
+    agent_id: ""
+  });
+  const [printable, setPrintable] = useState(false);
+
+  const handlePrint = () => {
+    setPrintable(true);
+    window.print();
+    setPrintable(false);
+  };
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/insurance')
+      .then(res => {
+        setData(res.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
+
+  // console.log(data)
 
   return (
     <BrowserRouter>
+      {printable ? null : <Header
+        SetLoggedIn={SetLoggedIn}
+        loggedIn={loggedIn}
+        selectedId={selectedId}
+        formData={formData}
+        setFormData={setFormData}
+        printable={printable}
+      />}
       <Routes>
         <Route path="/" element={
-          <>
-            <Header />
-            <Main
-              insurance={insurance}
-              selectedInsurance={selectedInsurance}
-              setSelectedInsurance={setSelectedInsurance}
-            />
-            <Footer />
-          </>
+          <Main
+            insurance={data}
+            selectedInsurance={selectedInsurance}
+            setSelectedInsurance={setSelectedInsurance}
+          />
+        } />
+        <Route path="/main" element={
+          <Main
+            insurance={data}
+            selectedInsurance={selectedInsurance}
+            setSelectedInsurance={setSelectedInsurance}
+          />
         } />
         <Route path="/signup" element={
-          <>
-            <Header />
-            <Signup />
-            <Footer />
-          </>
+          <Signup
+            selectedId={selectedId}
+            setSelectedId={setSelectedId}
+            loggedIn={loggedIn}
+          />
         }
         />
         <Route path="/login" element={
-          <>
-            <Header />
-            <Login />
-            <Footer />
-          </>
+          <Login
+            loggedIn={loggedIn}
+            SetLoggedIn={SetLoggedIn}
+            selectedId={selectedId}
+            setSelectedId={setSelectedId}
+          />
         }
         />
         <Route path="/product" element={
-          <>
-            <Header />
-            <Product
-              selectedInsurance={selectedInsurance}
-            />
-            <Footer />
-          </>
+          <Product
+            loggedIn={loggedIn}
+            selectedInsurance={selectedInsurance}
+          />
         }
         />
         <Route path="/forms" element={
-          <>
-            <Header />
-            <Forms
-              selectedInsurance={selectedInsurance}
-            />
-            <Footer />
-          </>
+          <Forms
+            selectedInsurance={selectedInsurance}
+            formData={formData}
+            setFormData={setFormData}
+            loggedIn={loggedIn}
+            selectedId={selectedId}
+          />
         }
         />
         <Route path="/purchase" element={
-          <>
-            <Header />
-            <Purchase
+          <Purchase
+            selectedInsurance={selectedInsurance}
+          />
+        }
+        />
+        <Route path="/table" element={
+          <Table
+          selectedInsurance={selectedInsurance}
+          formData={formData}
+          loggedIn={loggedIn}
+          selectedId={selectedId}
+          />
+        }
+        />
+        <Route path="/report" element={
+          printable ?
+            <PrintableReport
               selectedInsurance={selectedInsurance}
+              formData={formData}
+              setFormData={setFormData}
+              loggedIn={loggedIn}
+              selectedId={selectedId}
+              handlePrint={handlePrint}
+              printable={printable}
+              setPrintable={setPrintable}
+            /> :
+            <Report
+              selectedInsurance={selectedInsurance}
+              formData={formData}
+              setFormData={setFormData}
+              loggedIn={loggedIn}
+              selectedId={selectedId}
+              handlePrint={handlePrint}
+              printable={printable}
+              setPrintable={setPrintable}
             />
-            <Footer />
-          </>
         }
         />
       </Routes>
+      {printable ? null : <Footer
+        printable={printable} />}
     </BrowserRouter>
   );
 }
